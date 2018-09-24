@@ -42,7 +42,7 @@ def main():
             
             # Formatting names
             user_name = user['givenName']
-            user_surname = user ['surname']
+            user_surname = user['surname']
 
             if user_name is None and user_surname is None:
                 if user['displayName'] is not None:
