@@ -76,7 +76,7 @@ def conn_to_admin(ahost,no_ssl):
     else:
         return http.client.HTTPSConnection(ahost,timeout=5)
 
-def main(group, tenantId, ahost, admin_name=None, admin_pass=None, no_ssl=False):
+def main(group, ahost, tenantId=None, admin_name=None, admin_pass=None, no_ssl=False):
     admin_conn = conn_to_admin(ahost,no_ssl)
 
     with open(mxv_csv_file, 'r') as csvfile:
@@ -117,13 +117,13 @@ def main(group, tenantId, ahost, admin_name=None, admin_pass=None, no_ssl=False)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    parser.add_argument('--tenant', dest='tenant', help='Tenant ID of Azure AD', metavar='XXX-XXX-XXX')
     parser.add_argument('--admin-name', dest='admin_name', help='Admin username for provisioning if configured', metavar='NAME')
     parser.add_argument('--admin-pass', dest='admin_pass', help='Admin password for provisioning if configured', metavar='PASS')
     parser.add_argument('--no-ssl', dest='no_ssl', action='store_true', help='If provided, connection is on unsecured HTTP. Default is False')
     requiredArg = parser.add_argument_group('required arguments')
     requiredArg.add_argument('--group', dest='group', help='Group name for provision', metavar='GROUP', required=True)
-    requiredArg.add_argument('--tenant', dest='tenant', help='Tenant ID of Azure AD', metavar='XXX-XXX-XXX', required=True)
     requiredArg.add_argument('--admin-host', dest='admin_host', help='Provisioning server administrator API host address', metavar='<example.com>', required=True)
     
     args = parser.parse_args()
-    main(args.group, args.tenant, args.admin_host, args.admin_name, args.admin_pass, args.no_ssl)
+    main(args.group, args.admin_host, args.tenant, args.admin_name, args.admin_pass, args.no_ssl)
