@@ -53,7 +53,9 @@ def body_json(user, group, tenantId):
         "first_name" : user['First Name'],
         "last_name" : user['Last Name'],
         "mobile_number" : user['Cell Phone'],
-        "outgoing_number" : get_outgoing_number(user)
+        "outgoing_number" : get_outgoing_number(user),
+        "extension" : user['Extension'],
+        "id" : user['ID']
         }
     services = {"MX" : mx}
 
