@@ -6,8 +6,6 @@ import string
 import http.client
 import base64
 
-mxv_csv_file = "/path/to/csv_output.csv"
-c73_user_list = "/path/to/save/c73_user_list.csv"
 
 fieldnames = ("First Name","Last Name","Extension","Voice DID","Fax DID","Caller ID","ID for MS Exchange","Home Phone","Cell Phone","Fax Number",
                 "E-mail","Alternate E-mail","User Name","Password","PIN","Pseudonym","User Profile","ID","Admin Profile","Paging Profile","Recording Profile","Home MX",
@@ -76,11 +74,11 @@ def conn_to_admin(ahost,no_ssl):
     else:
         return http.client.HTTPSConnection(ahost,timeout=5)
 
-def main(group, ahost, tenantId=None, admin_name=None, admin_pass=None, no_ssl=False):
+def main(group, ahost, mxv_csv_file, tenantId=None, admin_name=None, admin_pass=None, no_ssl=False):
     admin_conn = conn_to_admin(ahost,no_ssl)
 
     with open(mxv_csv_file, 'r') as csvfile:
-        with open(c73_user_list, 'w') as c73_csv:
+        with open('c73_user_list.csv', 'w') as c73_csv:
             writer = csv.DictWriter(c73_csv, fieldnames=('C73 Username','C73 Password'), dialect='excel')
             writer.writeheader()
 
@@ -122,8 +120,9 @@ if __name__ == '__main__':
     parser.add_argument('--admin-pass', dest='admin_pass', help='Admin password for provisioning if configured', metavar='PASS')
     parser.add_argument('--no-ssl', dest='no_ssl', action='store_true', help='If provided, connection is on unsecured HTTP. Default is False')
     requiredArg = parser.add_argument_group('required arguments')
+    requiredArg.add_argument('--mxv-file', dest='mxvfile', help='MXvirtual exported user list file', metavar='FILE', required=True)
     requiredArg.add_argument('--group', dest='group', help='Group name for provision', metavar='GROUP', required=True)
     requiredArg.add_argument('--admin-host', dest='admin_host', help='Provisioning server administrator API host address', metavar='<example.com>', required=True)
     
     args = parser.parse_args()
-    main(args.group, args.admin_host, args.tenant, args.admin_name, args.admin_pass, args.no_ssl)
+    main(args.group, args.admin_host, args.mxvfile, args.tenant, args.admin_name, args.admin_pass, args.no_ssl)
