@@ -5,7 +5,7 @@ import secrets
 
 from subprocess import check_output, call
 
-mxv_csv = "/Users/muhammetmadraimov/Desktop/hs/azure_provisioning/demo.csv"
+mxv_csv = "/path/to/csv/demo.csv"
 
 fieldnames = ("TenantID","First Name","Last Name","Extension","Voice DID","Fax DID","Caller ID","ID for MS Exchange","Home Phone","Cell Phone","Fax Number",
                 "E-mail","Alternate E-mail","User Name","Password","PIN","Pseudonym","User Profile","ID","Admin Profile","Paging Profile","Recording Profile","Home MX",
@@ -18,7 +18,7 @@ def azure_password():
     return password
 
 # Login
-# call(['az', 'login', '--allow-no-subscription'])
+call(['az', 'login', '--allow-no-subscription'])
 
 with open(mxv_csv, 'r') as csvfile:
     reader = csv.DictReader(csvfile,fieldnames)
